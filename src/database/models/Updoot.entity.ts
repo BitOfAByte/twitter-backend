@@ -1,6 +1,6 @@
-import { Entity, BaseEntity, ManyToOne, PrimaryColumn, Column } from "typeorm";
-import { User } from "./User.entity";
-import { Post } from "./Post.entity";
+import { Entity, BaseEntity, ManyToOne, PrimaryColumn, Column } from 'typeorm';
+import { User } from './User.entity';
+import { Post } from './Post.entity';
 
 // m to n
 // many to many
@@ -10,20 +10,20 @@ import { Post } from "./Post.entity";
 
 @Entity()
 export class Updoot extends BaseEntity {
-  @Column({ type: "int" })
-  value: number;
+	@Column({ type: 'int' })
+	value: number;
 
-  @PrimaryColumn()
-  userId: number;
+	@PrimaryColumn({ type: 'int' })
+	userId: number;
 
-  @ManyToOne(() => User, (user) => user.updoots)
-  user: User;
+	@ManyToOne(() => User, (user) => user.updoots)
+	user: User;
 
-  @PrimaryColumn()
-  postId: number;
+	@PrimaryColumn({ type: 'int' })
+	postId: number;
 
-  @ManyToOne(() => Post, (post) => post.updoots, {
-    onDelete: "CASCADE",
-  })
-  post: Post;
+	@ManyToOne(() => Post, (post) => post.updoots, {
+		onDelete: 'CASCADE',
+	})
+	post: Post;
 }

@@ -21,7 +21,7 @@ export class User extends BaseEntity {
 	@Column({ unique: true, type: 'varchar' })
 	email!: string;
 
-	@Column()
+	@Column({ type: 'varchar' })
 	password!: string;
 
 	@OneToMany(() => Post, (post) => post.creator)
