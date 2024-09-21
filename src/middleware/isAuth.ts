@@ -12,6 +12,7 @@ export const isAuth = (req: UserRequest, res: Response, next: NextFunction) => {
 		req.user = payload as any;
 	} catch (error) {
 		console.log(error);
+		return res.status(401).json({ message: 'Unauthorized' });
 	}
 	return next();
 };
