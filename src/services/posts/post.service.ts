@@ -1,5 +1,6 @@
 import { Post } from '@App/database/models/Post.entity';
 import { Updoot } from '@App/database/models/Updoot.entity';
+import { User } from '@App/database/models/User.entity';
 import PostDTO from '@App/dto/Post.dto';
 import Service from '@App/utils/decorators/service.decorators';
 import { Repository } from 'typeorm';
@@ -8,6 +9,8 @@ import { Repository } from 'typeorm';
 export default class PostService {
 	private readonly postRepo: Repository<Post>;
 	private readonly updootRepo: Repository<Updoot>;
+	private readonly userRepo: Repository<User>;
+
 	async getPosts() {
 		return await this.postRepo.find();
 	}
@@ -17,9 +20,12 @@ export default class PostService {
 		return post;
 	}
 
-	async deletePost(id: number) {
+	async deletePost(id: number, userId: number) {
 		const post = await this.postRepo.delete(id);
-		if (!post) return null;
+		const user = await this.userRepo.findOne({ where: { id: userId } });
+		if (post.affected === 0 || user?.id !== post.raw[0].creatorId) {
+			return null;
+		}
 		return post;
 	}
 
