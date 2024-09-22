@@ -55,4 +55,37 @@ export default class PostController {
 				.json({ error: `Internal server error: ${err}` });
 		}
 	}
+
+	@Post('/update/:id')
+	@Middleware(isAuth)
+	public async updatePost(req: Request, res: Response) {
+		if (!req.body.title || !req.body.content)
+			return res.status(400).json({ error: 'Missing required fields' });
+
+		try {
+			const post = await this.postService.updatePost(
+				Number(req.params.id),
+				req.body
+			);
+			if (!post) return res.status(404).json({ error: 'Post not found' });
+			return res.status(200).json({ post });
+		} catch (err) {
+			return res
+				.status(500)
+				.json({ error: `Internal server error: ${err}` });
+		}
+	}
+
+	@Get('/:id')
+	public async getPost(req: Request, res: Response) {
+		try {
+			const post = await this.postService.getPost(Number(req.params.id));
+			if (!post) return res.status(404).json({ error: 'Post not found' });
+			return res.status(200).json({ post });
+		} catch (err) {
+			return res
+				.status(500)
+				.json({ error: `Internal server error: ${err}` });
+		}
+	}
 }
