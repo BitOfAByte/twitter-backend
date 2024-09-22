@@ -7,6 +7,11 @@ import { Response } from 'express';
 
 @Service()
 export default class AuthService {
+	async logout(id: number) {
+		const user = await User.findOne({ where: { id } });
+		if (!user) return null;
+		return user;
+	}
 	public async getProfile(id: any) {
 		const user = await User.findOne({ where: { id } });
 		if (!user) return null;

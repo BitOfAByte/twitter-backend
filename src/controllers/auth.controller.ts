@@ -44,4 +44,18 @@ export default class AuthController {
 				.json({ error: `Internal server error: ${err}` });
 		}
 	}
+
+	@Post('/logout')
+	@Middleware(isAuth)
+	public async logout(req: UserRequest, res: Response) {
+		try {
+			res.clearCookie('jid');
+			await this.authService.logout(req.user!.id);
+			return res.status(200).json({ message: 'Logged out' });
+		} catch (err) {
+			return res
+				.status(500)
+				.json({ error: `Internal server error: ${err}` });
+		}
+	}
 }
