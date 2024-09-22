@@ -6,7 +6,7 @@ const MIDDLEWARE_KEY = Symbol('middlewares');
 export const Middleware = (
 	...middlewares: RequestHandler[]
 ): MethodDecorator => {
-	return (target, propertyKey, descriptor) => {
+	return (target, propertyKey, _descriptor) => {
 		Reflect.defineMetadata(
 			MIDDLEWARE_KEY,
 			middlewares,
