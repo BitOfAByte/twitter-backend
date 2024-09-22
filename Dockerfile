@@ -12,4 +12,6 @@ ENV POSTGRES_USER: postgres
 ENV POSTGRES_PASSWORD: Azizaetl8.
 ENV POSTGRES_DB: twitter
 
+RUN npx typeorm-ts-node-commonjs migration:generate -d .\src\database\data-source.ts ./src/migrations/init
+RUN npx typeorm-ts-node-commonjs migration:run -d .\src\database\data-source.ts
 CMD ["npm", "run", "dev"]
