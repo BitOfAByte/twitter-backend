@@ -1,4 +1,5 @@
-import AuthController from './auth.controller';
-import UserController from './user.controller';
+import AuthController from './auth/auth.controller';
+import PostController from './posts/Post.controller';
+import UserController from './users/user.controller';
 
-export const controllers = [UserController, AuthController];
+export const controllers = [UserController, AuthController, PostController];
