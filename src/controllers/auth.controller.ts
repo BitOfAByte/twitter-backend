@@ -14,14 +14,16 @@ export default class AuthController {
 		this.authService = new AuthService();
 	}
 
-	@Post('/create')
-	public async createUser(req: Request, res: Response) {
-		if (!req.body.username || !req.body.email || !req.body.password)
+	@Post('/login')
+	public async login(req: Request, res: Response) {
+		if (!req.body.email || !req.body.password)
 			return res.status(400).json({ error: 'Missing required fields' });
 		if (req.method !== 'POST')
 			return res.status(405).json({ error: 'Method not allowed' });
 		try {
-			const user = await this.authService.login(req.body);
+			const user = await this.authService.login(req.body, res);
+			if (!user)
+				return res.status(401).json({ error: 'Invalid credentials' });
 			return res.status(201).json({ user });
 		} catch (err) {
 			return res
