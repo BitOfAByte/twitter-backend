@@ -9,13 +9,14 @@ services:
         volumes:
             - database_data:/var/lib/postgresql/data
     api:
-        build: .
+        image: tjens23/twitter-backend
+        build:
+            context: .
+            dockerfile: Dockerfile
         expose:
             - 3001
         ports:
             - 3001:3001
-        volumes:
-            - ./api:/usr/src/app/
         links:
             - db
         environment:
