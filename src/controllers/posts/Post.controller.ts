@@ -88,4 +88,27 @@ export default class PostController {
 				.json({ error: `Internal server error: ${err}` });
 		}
 	}
+
+	@Post('/vote/:postId')
+	@Middleware(isAuth)
+	public async votePost(req: UserRequest, res: Response) {
+		const { postId } = req.params;
+		const { value } = req.body;
+		if (!value || (value !== 1 && value !== -1))
+			return res.status(400).json({ error: 'Invalid vote value' });
+
+		try {
+			const post = await this.postService.votePost(
+				Number(postId),
+				req.user!.id,
+				value
+			);
+			if (!post) return res.status(404).json({ error: 'Post not found' });
+			return res.status(200).json({ post });
+		} catch (err) {
+			return res
+				.status(500)
+				.json({ error: `Internal server error: ${err}` });
+		}
+	}
 }
